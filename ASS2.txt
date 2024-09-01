@@ -1,0 +1,314 @@
+
+The following tables form part of a database held in a relational DBMS:
+Hotel (HotelNo, Name, City) HotelNo is the primary key Room (RoomNo, HotelNo, Type, Price).Booking (HotelNo, Guest No. DateFrom, Date To. Room No).Guest (GuestNo, GuestName, GuestAddress) Guest No is primary key.Room contains room details for each hotel and (HotelNo, Room No) forms the primary key.Booking contains details of the bookings and the primary key comprises (HotelNo, GuestNo and DateFrom).
+
+mysql> create database Tushar; 
+Query OK, 1 row affected (0.01 sec)
+mysql> use Tushar;
+Database changed
+ mysql> create table Hotel(
+-> HotelNo int(18),
+-> Name varchar(30),
+-> City varchar(20),
+-> primary key (HotelNo));
+Query OK, rows affected, 1
+
+ mysql> create table Room(
+-> RoomNo int(3)
+ -> HotelNo int(10),
+-> Type varchar(10),
+ -> Price int(20));
+ Query OK, rows affected, 3 warnings (0.82 sec)
+
+mysql> create table Booking( 
+->HotelNo int(10),
+-> GuestNo int(10),
+-> DateFrom date, 
+-> DateTo date,
+-> RoomNo int(3));
+ OK, rows affected, 3 warnings (8.82 sec)
+
+ mysql> insert into Hotel
+ -> values(1, 'Taj', 'Mumbai')
+ Query OK, 1 row affected (0.00 sec)
+ mysql> insert into Hotel
+-> values(2, 'Sai', 'Shirdi');
+ Query OK, 1 row affected (0.04 sec)
+ mysql> insert into Hotel 
+-> values(3, 'Grosvenor', 'Landon');
+ Query OK, 1 row affected (0.04 sec)
+ mysql> insert into Hotel
+-> values (4, 'Alister', 'Landon');
+Query OK, 1 row affected (0.00 sec)
+mysql> insert into Hotel 
+-> values(5, 'TrumphCard', 'Newyork'); 
+Query OK, 1 row affected (0.04 sec)
+
+ mysql> insert into Room
+ ->values(1,1, 'AC', 5000);
+ Query OK, 1 row affected (0.04 sec)
+ mysql> insert into Room 
+->values(2,2, 'NonAC', 4000);
+Query OK, 1 row affected (0.04 sec)
+mysql> insert into Room
+->values(3,3, 'NonAC', 6000);
+Query OK, 1 row affected (0.04 sec)
+mysql> insert into Room 
+->values(4,4, 'AC', 8000); 
+Query OK, 1 row affected (0.01 sec)
+mysql> insert into Room
+ ->values(5,5, AC', 6200);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into Booking
+-> values(1, 1, '2023-12-14', '2023-12-18', 1);
+Query OK, 1 row affected (0.04 sec)
+mysql> insert into Booking
+ ->values(3, 3, '2023-07-13', '2023-88-2', 3);
+Query OK, 1 row affected (0.00 sec)
+mysql> insert into Booking
+->values(4, 4, '2022-08-1', '2023-09-20, 4);
+Query OK, 1 row affected (0.04 sec)
+mysql> insert into Booking 
+-> values(5, 5, 2023-05-20', '2823-05-30'
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into Guest
+->values(1, 'Mukesh', 'Pune'); 
+Query OK, 1 row affected (0.04 sec)
+mysql> insert into Guest 
+->values(2, 'Dinesh', 'Sambhajinagar');
+Query OK, 1 row affected (0.04 sec)
+mysql> insert into Guest
+->values(3, 'Ramesh', 'Kolkata');
+ Query OK, 1 row affected (0.04 sec)
+mysql> insert into Guest
+->values(4, 'Suresh', 'Delhi');
+ Query OK, 1 row affected (0.00 sec)
+mysql> insert into Guest 
+->values(5, 'Umesh', 'Banglore'); 
+Query OK, 1 row affected (0.04 sec)
+
+
+1.List full details of all hotels.
+
+mysql> select * from Hotel;
++---------+-----------+---------+
+| HotelNo | Name      | City    |
++---------+-----------+---------+
+|       1 | Taj       | Mumbai  |
+|       2 | Sai       | Shirdi  |
+|       3 | Grosvenor | Landon  |
+|       4 | Alister   | Newyork |
+|       5 | King      | Delhi   |
++---------+-----------+---------+
+5 rows in set (0.09 sec)
+
+mysql> select * from Room;
++--------+---------+-------+-------+
+| RoomNo | HotelNo | Type  | Price |
++--------+---------+-------+-------+
+|      1 |       1 | AC    |  5000 |
+|      2 |       2 | AC    |  8000 |
+|      3 |       3 | NonAC |  2000 |
+|      4 |       4 | NonAC |  3000 |
+|      5 |       5 | AC    |  4000 |
++--------+---------+-------+-------+
+5 rows in set (0.04 sec)
+
+mysql> select * from Booking;
++---------+---------+------------+------------+--------+
+| HotelNo | GuestNo | DateFrom   | DateTo     | RoomNo |
++---------+---------+------------+------------+--------+
+|       1 |       1 | 2023-12-14 | 2023-12-18 |      1 |
+|       2 |       2 | 2023-04-23 | 2023-05-14 |      2 |
+|       3 |       3 | 2023-07-13 | 2023-08-02 |      3 |
+|       4 |       4 | 2022-08-01 | 2023-09-20 |      4 |
+|       5 |       5 | 2023-05-20 | 2023-05-30 |      5 |
++---------+---------+------------+------------+--------+
+5 rows in set (0.04 sec)
+
+mysql> select * from Guest;
++---------+-----------+---------------+
+| GuestNo | GuestName | GuestAdd      |
++---------+-----------+---------------+
+|       1 | Mukesh    | Pune          |
+|       2 | Dinesh    | Sambhajinagar |
+|       3 | Ramesh    | Kolkata       |
+|       4 | Suresh    | Delhi         |
+|       5 | Umesh     | Banglore      |
++---------+-----------+---------------+
+5 rows in set (0.01 sec)
+
+
+2.How many hotels are there?
+mysql> select count(Name) from Hotel;
++-------------+
+| count(Name) |
++-------------+
+|           5 |
++-------------+
+1 row in set (0.04 sec)
+
+
+3.List the price and type of all rooms at the Grosvenor Hotel.
+mysql> select Price,Type from Room where HotelNo=4;
++-------+-------+
+| Price | Type  |
++-------+-------+
+|  3000 | NonAC |
++-------+-------+
+1 row in set (0.04 sec)
+
+4.List the number of rooms in each hotel.
+mysql> select count(RoomNo) from Room where HotelNo=1;
++---------------+
+| count(RoomNo) |
++---------------+
+|             1 |
++---------------+
+1 row in set (0.00 sec)
+
+mysql> select count(RoomNo) from Room where HotelNo=2;
++---------------+
+| count(RoomNo) |
++---------------+
+|             1 |
++---------------+
+1 row in set (0.00 sec)
+
+mysql> select count(RoomNo) from Room where HotelNo=3;
++---------------+
+| count(RoomNo) |
++---------------+
+|             1 |
++---------------+
+1 row in set (0.00 sec)
+
+mysql> select count(RoomNo) from Room where HotelNo=4;
++---------------+
+| count(RoomNo) |
++---------------+
+|             1 |
++---------------+
+1 row in set (0.00 sec)
+
+
+5.Update the price of all rooms by 5%.
+mysql> update Room set Price=Price*1.05;
+Query OK, 5 rows affected (0.03 sec)
+Rows matched: 5  Changed: 5  Warnings: 0
+
+mysql> select * from Room;
++--------+---------+-------+-------+
+| RoomNo | HotelNo | Type  | Price |
++--------+---------+-------+-------+
+|      1 |       1 | AC    |  5250 |
+|      2 |       2 | AC    |  8400 |
+|      3 |       3 | NonAC |  2100 |
+|      4 |       4 | NonAC |  3150 |
+|      5 |       5 | AC    |  4200 |
++--------+---------+-------+-------+
+5 rows in set (0.00 sec)
+
+6.List full details of all hotels in London.
+mysql> select * from Hotel where City='London';
++---------+----------------+--------+
+| HotelNo | Name           | City   |
++---------+----------------+--------+
+|       3 | Grosvenor      | London |
++--------+---------+-------+-------+
+
+
+7.What is the average price of a room?
+mysql> select Avg(Price) from Room;
++------------+
+| Avg(Price) |
++------------+
+|  4620.0000 |
++------------+
+1 row in set (0.00 sec)
+
+
+8.List all guests currently staying at the Grosvenor Hotel.
+mysql> select G.GuestName from Guest G,Booking B where G.GuestNo=B.GuestNo and B.HotelNo=3;
++-----------+
+| GuestName |
++-----------+
+| Ramesh    |
++-----------+
+1 row in set (0.00 sec)
+
+
+9.List the number of rooms in each hotel in
+mysql> select count(R.RoomNo) from Room R,Hotel H where H.City='London' and
+    -> H.HotelNo=R.HotelNo;
++-----------------+
+| count(R.RoomNo) |
++-----------------+
+|               1 |
++-----------------+
+1 row in set (0.00 sec)
+
+10.Create one view on above database and query it.
+mysql> create view HotelView as select * from Hotel;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create view RoomView as select * from Room;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> create view BookingView as select * from Booking;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> create view GuestView as select * from Guest;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> select * from HotelView;
++---------+-----------+---------+
+| HotelNo | Name      | City    |
++---------+-----------+---------+
+|       1 | Taj       | Mumbai  |
+|       2 | Sai       | Shirdi  |
+|       3 | Grosvenor | Landon  |
+|       4 | Alister   | Newyork |
+|       5 | King      | Delhi   |
++---------+-----------+---------+
+5 rows in set (0.04 sec)
+
+mysql> select * from RoomView;
++--------+---------+-------+-------+
+| RoomNo | HotelNo | Type  | Price |
++--------+---------+-------+-------+
+|      1 |       1 | AC    |  5250 |
+|      2 |       2 | AC    |  8400 |
+|      3 |       3 | NonAC |  2100 |
+|      4 |       4 | NonAC |  3150 |
+|      5 |       5 | AC    |  4200 |
++--------+---------+-------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select * from BookingView;
++---------+---------+------------+------------+--------+
+| HotelNo | GuestNo | DateFrom   | DateTo     | RoomNo |
++---------+---------+------------+------------+--------+
+|       1 |       1 | 2023-12-14 | 2023-12-18 |      1 |
+|       2 |       2 | 2023-04-23 | 2023-05-14 |      2 |
+|       3 |       3 | 2023-07-13 | 2023-08-02 |      3 |
+|       4 |       4 | 2022-08-01 | 2023-09-20 |      4 |
+|       5 |       5 | 2023-05-20 | 2023-05-30 |      5 |
++---------+---------+------------+------------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select * from GuestView;
++---------+-----------+---------------+
+| GuestNo | GuestName | GuestAdd      |
++---------+-----------+---------------+
+|       1 | Mukesh    | Pune          |
+|       2 | Dinesh    | Sambhajinagar |
+|       3 | Ramesh    | Kolkata       |
+|       4 | Suresh    | Delhi         |
+|       5 | Umesh     | Banglore      |
++---------+-----------+---------------+
+5 rows in set (0.00 sec)
+
+mysql>

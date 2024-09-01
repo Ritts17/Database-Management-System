@@ -1,0 +1,293 @@
+mysql> use BOOK_Publication;
+Database changed
+mysql> create table Book
+    -> (ISBN int(20),
+    -> Book_Title varchar(20),
+    -> Category varchar(50),
+    -> Price int(20),
+    -> Copyright_date date,
+    -> year int(200),
+    -> Page_count int(30),
+    -> P_Id int(20));
+Query OK, 0 rows affected, 5 warnings (0.10 sec)
+
+mysql> create table Publisher
+    -> (P_Id int(20),
+    -> P_Name varchar(40),
+    -> Address varchar(50),
+    -> State varchar(30),
+    -> Phone int(100),
+    -> E_Mail varchar(30));
+Query OK, 0 rows affected, 2 warnings (0.05 sec)
+
+mysql> create table Author
+    -> (A_Id int(20),
+    -> A_Name varchar(40),
+    -> City varchar(20),
+    -> State varchar(20),
+    -> Zip_code int(40),
+    -> Phone int(50),
+    -> Url varchar(100));
+Query OK, 0 rows affected, 3 warnings (0.05 sec)
+
+mysql> create table Author_Book
+    -> (A_Id int(20),
+    -> ISBN int(20));
+Query OK, 0 rows affected, 2 warnings (0.05 sec)
+
+mysql> create table Review
+    -> (R_Id int(20),
+    -> ISBN int(20),
+    -> Rating varchar(40));
+Query OK, 0 rows affected, 2 warnings (0.05 sec)
+
+mysql> insert into Book
+    -> values(1, 'Wings of fire', 'Novel' , 400, '2023-04-12', 2023, 500,11);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into Book
+    ->  values(2, 'Mrutunjay', 'Novel' , 400, '2023-05-12', 2023, 500,12);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into Book values(3, 'Missile Man', 'Biography' , 300, '2023-03-13', 2023,400,22);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into Book
+    ->  values(4, 'CPP_Fundamentals', 'Programming' , 200, '2023-02-13', 2023,400,23);
+Query OK, 1 row affected (0.04 sec)
+mysql> insert into Book
+    ->  values(5, 'Hamlet', 'Novel' , 500, '2023-05-12', 2023, 550,24);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from Book;
++------+------------------+-------------+-------+----------------+------+------------+------+
+| ISBN | Book_Title       | Category    | Price | Copyright_date | year | Page_count | P_Id |
++------+------------------+-------------+-------+----------------+------+------------+------+
+|    1 | Wings of fire    | Novel       |   400 | 2023-04-12     | 2023 |        500 |   11 |
+|    2 | Mrutunjay        | Novel       |   400 | 2023-05-12     | 2023 |        500 |   12 |
+|    3 | Missile Man      | Biography   |   300 | 2023-03-13     | 2023 |        400 |   22 |
+|    4 | CPP_Fundamentals | Programming |   200 | 2023-02-13     | 2023 |        400 |   23 |
+|    5 | Hamlet           | Novel       |   500 | 2023-05-12     | 2023 |        550 |   24 |
++------+------------------+-------------+-------+----------------+------+------------+------+
+5 rows in set (0.00 sec)
+
+mysql> insert into Publisher
+    -> values(11, 'Dr.Upadhay', 'Pune', 'Maharashtra', 1234543, "abc@gmail.com");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into Publisher
+    -> values(12, 'Dr.Williams', 'Delhi' , 'Hariyana', 1234543, "pqr@gmail.com");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into Publisher
+    -> values(22, 'Sudarshan', 'Pune' , 'Maharashtra', 123656543, "asd@gmail.com");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Publisher
+    -> values(23, 'Peerson', 'Pune' , 'Maharashtra', 12346543, "bnm@gmail.com");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into Publisher
+    -> values(24, 'Devdas', 'kolkata' , 'westBangol', 1666543, "qwe@gmail.com");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from Publisher;
++------+-------------+---------+-------------+-----------+---------------+
+| P_Id | P_Name      | Address | State       | Phone     | E_Mail        |
++------+-------------+---------+-------------+-----------+---------------+
+|   11 | Dr.Upadhay  | Pune    | Maharashtra |   1234543 | abc@gmail.com |
+|   12 | Dr.Williams | Delhi   | Hariyana    |   1234543 | pqr@gmail.com |
+|   22 | Sudarshan   | Pune    | Maharashtra | 123656543 | asd@gmail.com |
+|   23 | Peerson     | Pune    | Maharashtra |  12346543 | bnm@gmail.com |
+|   24 | Devdas      | kolkata | westBangol  |   1666543 | qwe@gmail.com |
++------+-------------+---------+-------------+-----------+---------------+
+5 rows in set (0.00 sec)
+
+mysql> insert into Author
+    -> values(01, "Aditya","Pune", "Maharashtra", 4110982, 122, "www.AdityaPublication.com");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into Author
+    -> values(02, "Peerson","Pune", "Maharashtra", 4110982, 01122, "www.PeersonPublication.com");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into Author
+    -> values(03, "Vikarm Das","Delhi", "Hariyana", 401982, 0412, "www.VikarmDasPublication.com");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into Author
+    -> values(04, "Govinda","Mumbai", "Maharashtra", 41101, 03122, "www.GovindaPublication.com");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into Author
+    -> values(05, "Sudarshan","Banglore", "Karnataka", 45282, 0417, "www.SudarshanPublication.com");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from Author;
++------+------------+----------+-------------+----------+-------+------------------------------+
+| A_Id | A_Name     | City     | State       | Zip_code | Phone | Url                          |
++------+------------+----------+-------------+----------+-------+------------------------------+
+|    1 | Aditya     | Pune     | Maharashtra |  4110982 |   122 | www.AdityaPublication.com    |
+|    2 | Peerson    | Pune     | Maharashtra |  4110982 |  1122 | www.PeersonPublication.com   |
+|    3 | Vikarm Das | Delhi    | Hariyana    |   401982 |   412 | www.VikarmDasPublication.com |
+|    4 | Govinda    | Mumbai   | Maharashtra |    41101 |  3122 | www.GovindaPublication.com   |
+|    5 | Sudarshan  | Banglore | Karnataka   |    45282 |   417 | www.SudarshanPublication.com |
++------+------------+----------+-------------+----------+-------+------------------------------+
+5 rows in set (0.00 sec)
+
+mysql> insert into Author_Book
+    -> values(01, 1);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into Author_Book
+    -> values(02, 2);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into Author_Book
+    -> values(03, 3);
+Query OK, 1 row affected (0.04 sec)
+mysql> insert into Author_Book
+    -> values(04, 4);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into Review
+    -> values(123, 1, "3Star");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into Review
+    -> values(456, 2, "4Star");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Review
+    -> values(789, 3, "5Star");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into Review
+    -> values(147, 4, "4Star");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into Review
+    -> values(258, 5, "5Star");
+Query OK, 1 row affected (0.04 sec)
+
+mysql>  select Book.P_Id, Publisher.P_Name from Book INNER JOIN Publisher on Book.P_Id=Publisher.P_Id;
++------+-------------+
+| P_Id | P_Name      |
++------+-------------+
+|   11 | Dr.Upadhay  |
+|   12 | Dr.Williams |
+|   22 | Sudarshan   |
+|   23 | shekhar     |
+|   24 | Devdas      |
++------+-------------+
+5 rows in set (0.00 sec)
+
+mysql> select Book.P_Id,Publisher.P_Name from Book LEFT JOIN Publisher on Book.P_Id=Publisher.P_Id;
++------+-------------+
+| P_Id | P_Name      |
++------+-------------+
+|   11 | Dr.Upadhay  |
+|   12 | Dr.Williams |
+|   22 | Sudarshan   |
+|   23 | shekhar     |
+|   24 | Devdas      |
++------+-------------+
+5 rows in set (0.04 sec)
+
+mysql> select Book.P_Id,Publisher.P_Name from Book Right JOIN Publisher on Book.P_Id=Publisher.P_Id;
++------+-------------+
+| P_Id | P_Name      |
++------+-------------+
+|   11 | Dr.Upadhay  |
+|   12 | Dr.Williams |
+|   22 | Sudarshan   |
+|   23 | shekhar     |
+|   24 | Devdas      |
++------+-------------+
+5 rows in set (0.00 sec)
+
+mysql> create view PublisherView AS select P_Name,Address,Phone from Publisher;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> select * from PublisherView;
++-------------+---------+-----------+
+| P_Name      | Address | Phone     |
++-------------+---------+-----------+
+| Dr.Upadhay  | Pune    |   1234543 |
+| Dr.Williams | Delhi   |   1234543 |
+| Sudarshan   | Pune    | 123656543 |
+| shekhar     | Pune    |  12346543 |
+| Devdas      | kolkata |   1666543 |
++-------------+---------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> select P_Name,Address, Phone From Publisher
+    -> where state="Maharashtra";
++------------+---------+-----------+
+| P_Name     | Address | Phone     |
++------------+---------+-----------+
+| Dr.Upadhay | Pune    |   1234543 |
+| Sudarshan  | Pune    | 123656543 |
+| shekhar    | Pune    |  12346543 |
++------------+---------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> select Book_Title, Price From  Book
+    -> where Page_Count>500;
++------------+-------+
+| Book_Title | Price |
++------------+-------+
+| Hamlet     |   500 |
++------------+-------+
+1 row in set (0.04 sec)
+
+mysql> select City, Phone, Url From Author
+    -> Where A_Name="Sudarshan";
++----------+-------+------------------------------+
+| City     | Phone | Url                          |
++----------+-------+------------------------------+
+| Banglore |   417 | www.SudarshanPublication.com |
++----------+-------+------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select ISBN, Book_Title, Price From Book
+    -> where Category="Novel" OR Category="Language";
++------+---------------+-------+
+| ISBN | Book_Title    | Price |
++------+---------------+-------+
+|    1 | Wings of fire |   400 |
+|    2 | Mrutunjay     |   400 |
+|    5 | Hamlet        |   500 |
++------+---------------+-------+
+3 rows in set (0.00 sec)
+
+mysql> Update Book
+    -> SET Price=Price*1.1
+    -> Where Category="Novel";
+Query OK, 3 rows affected (0.04 sec)
+Rows matched: 3  Changed: 3  Warnings: 0
+
+mysql> select Book_Title, Category , Price From Book;
++------------------+-------------+-------+
+| Book_Title       | Category    | Price |
++------------------+-------------+-------+
+| Wings of fire    | Novel       |   440 |
+| Mrutunjay        | Novel       |   440 |
+| Missile Man      | Biography   |   300 |
+| CPP_Fundamentals | Programming |   200 |
+| Hamlet           | Novel       |   550 |
++------------------+-------------+-------+
+5 rows in set (0.00 sec)
+
+mysql> Select * From Author
+    -> Where City=(
+    -> select City From Author
+    -> Where A_Name="Aditya");
++------+---------+------+-------------+----------+-------+----------------------------+
+| A_Id | A_Name  | City | State       | Zip_code | Phone | Url
+          |
++------+---------+------+-------------+----------+-------+----------------------------+
+|    1 | Aditya  | Pune | Maharashtra |  4110982 |   122 | www.AdityaPublication.com  |
+|    2 | Peerson | Pune | Maharashtra |  4110982 |  1122 | www.PeersonPublication.com |
++------+---------+------+-------------+----------+-------+----------------------------+
+2 rows in set (0.04 sec)

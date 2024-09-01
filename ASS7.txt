@@ -1,0 +1,96 @@
+
+mysql> create database db7
+    -> ;
+Query OK, 1 row affected (0.10 sec)
+
+mysql> use db7
+Database changed
+mysql> create table oldroll(roll int, Name varchar(20));
+Query OK, 0 rows affected (0.11 sec)
+
+mysql> insert into oldroll values(1,"Ganesh");
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into oldroll values(2,"Saurabh");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into oldroll values(3,"Niranjan");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into oldroll values(4,"Mangesh");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into oldroll values(5,"Tushar");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from oldroll;
++------+----------+
+| roll | Name     |
++------+----------+
+|    1 | Ganesh   |
+|    2 | Saurabh  |
+|    3 | Niranjan |
+|    4 | Mangesh  |
+|    5 | Tushar   |
++------+----------+
+5 rows in set (0.04 sec)
+
+mysql> create table Logtable(roll int, Name varchar(20), Date varchar(20));
+    -> $$
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> Delimiter $$
+mysql> create trigger
+    -> update_valueD
+    -> after update
+    -> on oldroll
+    -> for each row
+    -> begin
+    -> insert into Logtable values(old.roll, old.Name, curdate());
+    -> end;
+    -> $$
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> update oldroll set Name="Durga" where roll=3;
+    -> $$
+Query OK, 1 row affected (0.04 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from Logtable ;
+    -> $$
++------+----------+------------+
+| roll | Name     | Date       |
++------+----------+------------+
+|    3 | Niranjan | 2023-10-08 |
++------+----------+------------+
+1 rows in set (0.00 sec)
+
+
+mysql> Delimiter $$
+mysql> create trigger
+    -> delete_value1
+    -> after delete
+    -> on oldroll
+    -> for each row
+    -> begin
+    -> insert into logtable values(old.roll, old.Name, curdate());
+    -> end;
+    -> $$
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> Delete from oldroll where Name="Saurabh";
+    -> $$
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from Logtable;
+    -> $$
++------+----------+------------+
+| roll | Name     | Date       |
++------+----------+------------+
+|    3 | Niranjan | 2023-10-08 |
+|    2 | Saurabh  | 2023-10-08 |
++------+----------+------------+
+2 rows in set (0.00 sec)
+
+mysql>
+

@@ -1,0 +1,68 @@
+
+mysql> create database student_marks;
+Query OK, 1 row affected (0.09 sec)
+
+mysql> use student_marks;
+Database changed
+mysql> create table student_grade
+    -> (student_name varchar(20),
+    -> marks int(20),
+    -> category varchar(20));
+Query OK, 0 rows affected, 1 warning (0.10 sec)
+
+
+mysql> delimiter $$
+mysql> CREATE PROCEDURE proc_gradesss(IN student_nm varchar(20),IN exam_marks int)
+    -> begin
+    -> declare grade_category varchar(20);
+    -> IF exam_marks <= 1500 AND exam_marks>=990 THEN
+    -> SET grade_category="Distinction";
+    -> ELSEIF exam_marks >= 900 AND exam_marks <=989 THEN
+    -> SET grade_category="First Class";
+    -> ELSEIF exam_marks >=825 AND exam_marks <= 899 THEN
+    -> SET grade_category="Higher Second Class";
+    -> ELSE
+    -> SET grade_category="No Category";
+    -> END IF;
+    -> INSERT INTO student_grade(student_name,marks,category)
+    -> VALUES(student_nm,exam_marks,grade_category);
+    -> END $$
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> call proc_gradesss("Neha" , 1200);
+    -> $$
+Query OK, 1 row affected (0.04 sec)
+
+mysql> call proc_gradesss("Ravi" , 1200);
+    -> $$
+Query OK, 1 row affected (0.04 sec)
+
+mysql> call proc_gradesss("Reshma" , 800);
+    -> $$
+Query OK, 1 row affected (0.04 sec)
+
+mysql> call proc_gradesss("Sakshi" , 1300);
+    -> $$
+Query OK, 1 row affected (0.04 sec)
+
+mysql> call proc_gradesss("Gaurav" , 700);
+    -> $$
+Query OK, 1 row affected (0.04 sec)
+
+mysql> call proc_gradesss("Amit" , 870);
+    -> $$
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from student_grade;
+    -> $$
++--------------+-------+---------------------+
+| student_name | marks | category            |
++--------------+-------+---------------------+
+| Neha         |  1200 | Distinction         |
+| Ravi         |  1200 | Distinction         |
+| Reshma       |   800 | No Category         |
+| Sakshi       |  1300 | Distinction         |
+| Gaurav       |   700 | No Category         |
+| Amit         |   870 | Higher Second Class |
++--------------+-------+---------------------+
+6 rows in set (0.00 sec)

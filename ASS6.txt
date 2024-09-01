@@ -1,0 +1,107 @@
+
+mysql> create database StudData;
+Query OK, 1 row affected (0.11 sec)
+
+mysql> use StudData;
+Database changed
+mysql> create table oldroll(roll int, Name varchar(20));
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> create table newroll(roll int, Name varchar(20));
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> insert into newroll values(1,"Tushar");
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into newroll values(2,"Tejaswini");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into newroll values(3,"Ravi");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into oldroll values(3,"Ravi");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into oldroll values(2,"Tejaswini");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into oldroll values(1,"Tushar");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into oldroll values(4,"Samarth");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into oldroll values(5,"Sham");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from newroll;
++------+-----------+
+| roll | Name      |
++------+-----------+
+|    1 | Tushar    |
+|    2 | Tejaswini |
+|    3 | Ravi      |
++------+-----------+
+3 rows in set (0.04 sec)
+
+mysql> select * from oldroll;
++------+-----------+
+| roll | Name      |
++------+-----------+
+|    3 | Ravi      |
+|    2 | Tejaswini |
+|    1 | Tushar    |
+|    4 | Samarth   |
+|    5 | Sham      |
++------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> Delimiter $$
+mysql> create procedure rolllist()
+    -> begin
+    -> declare a int;
+    -> declare a1 varchar(10);
+    -> declare b int;
+    -> declare b1 varchar(10);
+    -> declare done int default false;
+    -> declare c1 cursor for select roll, name from oldroll;
+    -> declare c2 cursor for select roll, nmae from newroll;
+    -> declare continue handler for not found set done=true;
+    -> open c1;
+    -> open c2;
+    -> loop1:loop
+    -> fetch c1 into a,a1;
+    -> if done then
+    -> leave loop1
+    -> end if;
+    -> loop2:loop
+    -> fetch c2 into b,b1;
+    -> if done then
+    -> insert into newroll values(a,a1);
+    -> leave loop2;
+    -> end if;
+    -> if a1=b1 then
+    -> leave loop2;
+    -> end if;
+    -> end loop;
+    -> end loop;
+    -> close c1;
+    -> close c2;
+    -> end $$
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> call rolllist()
+    -> $$
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from newroll
+    -> $$
++------+-----------+
+| roll | Name      |
++------+-----------+
+|    1 | Tushar    |
+|    2 | Tejaswini |
+|    3 | Ravi      |
+|    2 | Tejaswini |
++------+-----------+
+4 rows in set (0.00 sec)

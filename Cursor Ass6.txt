@@ -1,0 +1,100 @@
+
+mysql> create database student_Data
+    -> ;
+Query OK, 1 row affected (0.04 sec)
+
+mysql> use student_Data;
+Database changed
+mysql> create table oldroll(roll int,Name varchar(20));
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> create table newroll(roll int,Name varchar(20));
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> insert into newroll values(2,'Minal');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into newroll values(5,'Sakshi');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into oldroll values(2,'Hema');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into oldroll values(5,'Aditi');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into oldroll values(4,'srushti');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into oldroll values(5,'asmita');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from newroll;
++------+--------+
+| roll | Name   |
++------+--------+
+|    2 | Minal  |
+|    5 | Sakshi |
++------+--------+
+2 rows in set (0.00 sec)
+
+mysql> select * from oldroll;
++------+---------+
+| roll | Name    |
++------+---------+
+|    2 | Hema    |
+|    5 | Aditi   |
+|    4 | srushti |
+|    5 | asmita  |
++------+---------+
+4 rows in set (0.00 sec)
+
+mysql> Delimiter $$
+mysql> create procedure roll_list01()
+    ->     begin
+    ->     declare a int;
+    ->     declare a1 varchar(10);
+    ->     declare b int;
+    ->     declare b1 varchar(10);
+    ->     declare done int default false;
+    ->     declare c1 cursor for select roll,name from oldroll;
+    ->     declare c2 cursor for select roll,name from newroll;
+    ->     declare continue handler for not found set done=true;
+    ->     open c1;
+    ->     open c2;
+    ->     loop1:loop
+    ->     fetch c1 into a,a1;
+    ->     if done then
+    ->     leave loop1;
+    ->     end if;
+    ->     loop2:loop
+    ->     fetch c2 into b,b1;
+    ->     if done then
+    ->     insert into newroll values(a,a1);
+    ->     leave loop2;
+    ->     end if;
+    ->     if a=b then
+    ->     leave loop2;
+    ->     end if;
+    ->     end loop;
+    ->     end loop;
+    ->     close c1;
+    ->     close c2;
+    ->     end $$
+Query OK, 0 rows affected (0.04 sec)
+
+mysql>
+mysql> call roll_list01() $$
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from newroll $$
++------+---------+
+| roll | Name    |
++------+---------+
+|    2 | Minal   |
+|    5 | Sakshi  |
+|    4 | srushti |
++------+---------+
+3 rows in set (0.00 sec)
+
+mysql>

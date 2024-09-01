@@ -1,0 +1,152 @@
+test> db.createCollection("Employee", {capped:true, size:5820055, max:6000})
+{ ok: 1 }
+
+test> db.Employees.insertOne({ _id:1, firstName:"John", lastName:"King", gender:"Male", salary:7000, department:{ name: "IT"}})
+{ acknowledged: true, insertedId: 1 }
+
+
+test> db.Employees.insertOne({ _id:2, firstName:"Sachin", lastName:"Patil", gender:"Male", salary:10000, department:{ name: "IT"}})
+{ acknowledged: true, insertedId: 2 }
+
+
+test> db.Employees.insertOne({ _id:3, firstName:"Rajiv", lastName:"Randhava", gender:"Male", salary:10000, department:{ name: "IT"}})
+{ acknowledged: true, insertedId: 3 }
+
+test> db.Employees.insertOne({ _id:4, firstName:"Sunita", lastName:"Nagare", gender:"Female", salary:15000, department:{ name: "Finance"}})
+{ acknowledged: true, insertedId: 4 }
+
+test> db.Employees.insertOne({ _id:5, firstName:"Reshma", lastName:"Patil", gender:"Female", salary:11000, department:{ name: "HR"}})
+{ acknowledged: true, insertedId: 5 }
+
+test> db.Employees.insertOne({ _id:6, firstName:"Mahesh", lastName:"Landge", gender:"Male", salary:17000, department:{ name: "Marketing"}})
+{ acknowledged: true, insertedId: 6 }
+
+test> db.Employees.insertOne({ _id:7, firstName:"Sandesh", lastName:"Lagad", gender:"Male", salary:10000, department:{ name: "Marketing"}})
+{ acknowledged: true, insertedId: 7 }
+
+
+
+test> db.Employees.find()
+[
+       { 
+        _id:1,
+        firstName: "John",
+        lastName: "King",
+        gender:'male',
+        salary: 7000,
+        department: { 
+                    "name":"IT" 
+                }
+    },
+    { 
+        _id:2,
+        firstName: "Sachin",
+        lastName: "Patil",
+        gender:'male',
+        salary: 10000,
+        department: { 
+                    "name":"IT" 
+                }
+    },
+
+  {
+    _id: 3,
+    firstName: 'Rajiv',
+    lastName: 'Randhava',
+    gender: 'Male',
+    salary: 10000,
+    department: { name: 'IT' }
+  },
+  {
+    _id: 4,
+    firstName: 'Sunita',
+    lastName: 'Nagare',
+    gender: 'Female',
+    salary: 15000,
+    department: { name: 'Finance' }
+  },
+  {
+    _id: 5,
+    firstName: 'Reshma',
+    lastName: 'Patil',
+    gender: 'Female',
+    salary: 11000,
+    department: { name: 'HR' }
+  },
+  {
+    _id: 6,
+    firstName: 'Mahesh',
+    lastName: 'Landge',
+    gender: 'Male',
+    salary: 17000,
+    department: { name: 'Marketing' }
+  },
+  {
+    _id: 7,
+    firstName: 'Sandesh',
+    lastName: 'Lagad',
+    gender: 'Male',
+    salary: 10000,
+    department: { name: 'Marketing' }
+  }
+]
+
+
+//match()
+test> db.Employees.aggregate([{$match:{gender:'Female'}}])
+[
+  {
+    _id: 4,
+    firstName: 'Sunita',
+    lastName: 'Nagare',
+    gender: 'Female',
+    salary: 15000,
+    department: { name: 'Finance' }
+  },
+  {
+    _id: 5,
+    firstName: 'Reshma',
+    lastName: 'Patil',
+    gender: 'Female',
+    salary: 11000,
+    department: { name: 'HR' }
+  }
+]
+
+//group()
+test> db.Employees.aggregate([{$group:{_id:'$department.name'}}])
+[
+  { _id: 'HR' },
+  { _id: 'IT' },
+  { _id: 'Finance' },
+  { _id: 'Marketing' }
+]
+
+
+test> db.Employees.aggregate([{$group:{_id:'$department.name', totalEmployess:{$sum:1}}}])
+[
+  { _id: 'HR', totalEmployess: 1 },
+  { _id: 'IT', totalEmployess: 1 },
+  { _id: 'Finance', totalEmployess: 1 },
+  { _id: 'Marketing', totalEmployess: 2 }
+]
+
+//sum()
+test> db.Employees.aggregate([{$match:{gender:'Female'}}, {$group:{_id:'$department.name', totalEmployees:{$sum:1}}}])
+[
+  { _id: 'HR', totalEmployees: 1 },
+  { _id: 'Finance', totalEmployees: 1 }
+]
+
+
+test> db.Employees.aggregate([{$match:{gender:'Male'}}, {$group:{_id:'$department.name', totalSalaries:{$sum:'$salary'}}}])
+[
+  { _id: 'IT', totalSalaries: 10000 },
+  { _id: 'Marketing', totalSalaries: 27000 }
+]
+test> db.Employees.aggregate([{$match:{gender:'Female'}}, {$group:{_id:'$department.name', totalSalaries:{$sum:'$salary'}}}])
+[
+  { _id: 'HR', totalSalaries: 11000 },
+  { _id: 'Finance', totalSalaries: 15000 }
+]
+test>

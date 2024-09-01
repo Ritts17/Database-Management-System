@@ -1,0 +1,325 @@
+4. The following tables form part of a database held in a relational DBMS:
+Hotel (HotelNo, Name, City) HotelNo is primary key
+Room (RoomNo, HotelNo, Type, Price)
+Booking (HotelNo, GuestNo, DateFrom, DateTo, RoomNo)
+Guest (GuestNo, GuestName, GuestAddress) GuestNo is primary key
+Solve following queries by SQL
+1. What is the total revenue per night from all double rooms?
+2. List the details of all rooms at the Grosvenor Hotel, including the name of 
+the guest staying in the room, if the room is occupied.
+3. What is the average number of bookings for each hotel in April?
+4. Create index on one of the field and show is performance in query.
+5. List full details of all hotels.
+6. List full details of all hotels in London.
+7. Update the price of all rooms by 5%.
+8. List the number of rooms in each hotel in London.
+9. List all double or family rooms with a price below £40.00 per night, in 
+ascending order of price
+
+Enter password: ******
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 11
+Server version: 8.0.34 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2023, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create database DBMS_Mock
+    -> ;
+Query OK, 1 row affected (0.13 sec)
+
+mysql> use DBMS_Mock;
+Database changed
+mysql> create table Hotel
+    -> (HotelNo int, Name varchar(20), City varchar(20),  Primary key(HotelNo));
+Query OK, 0 rows affected (0.13 sec)
+
+mysql> create table Room
+    -> (RoomNo int, HotelNo int, Type varchar(20), Price int);
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> create table Booking
+    -> (HotelNo int, GuestNo int, DateFrom date, DateTo date, RoomNo int);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create table Guest
+    -> (GuestNo int, GuestName varchar(20), GuestAddress varchar(20));
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> insert into Hotel
+    -> values(1, "Sai Hotel", "Shirdi");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Hotel
+    -> values(2, "Grosvenor", "Dubai");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into Hotel
+    -> values(3, "Giridhar", "Nashik");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into Hotel
+    -> values(4, "StarMob", "Landon");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into Hotel
+    -> values(5, "NewMoon", "Landon");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into Hotel
+    -> values(6, "CheerishLand", "Landon");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into Hotel
+    -> values(7, "Ruby", "Landon");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from Hotel;
++---------+--------------+--------+
+| HotelNo | Name         | City   |
++---------+--------------+--------+
+|       1 | Sai Hotel    | Shirdi |
+|       2 | Grosvenor    | Dubai  |
+|       3 | Giridhar     | Nashik |
+|       4 | StarMob      | Landon |
+|       5 | NewMoon      | Landon |
+|       6 | CheerishLand | Landon |
+|       7 | Ruby         | Landon |
++---------+--------------+--------+
+7 rows in set (0.00 sec)
+
+mysql> insert into Room
+    -> values(101, 1, "Double", 5000);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into Room
+    -> values(102, 1, "Double", 5000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Room
+    -> values(101, 2, "Single", 3000);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into Room
+    -> values(102, 2, "Double", 5100);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into Room
+    -> values(101, 3, "Double", 3000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Room
+    -> values(102, 3, "Single", 800);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into Room
+    -> values(102, 4, "Double", 3200);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Room
+    -> values(101, 4, "Single", 2500);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> seelct * from Room;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'seelct * from Room' at line 1
+mysql> select * from Room;
++--------+---------+--------+-------+
+| RoomNo | HotelNo | Type   | Price |
++--------+---------+--------+-------+
+|    101 |       1 | Double |  5000 |
+|    102 |       1 | Double |  5000 |
+|    101 |       2 | Single |  3000 |
+|    102 |       2 | Double |  5100 |
+|    101 |       3 | Double |  3000 |
+|    102 |       3 | Single |   800 |
+|    102 |       4 | Double |  3200 |
+|    101 |       4 | Single |  2500 |
++--------+---------+--------+-------+
+8 rows in set (0.00 sec)
+
+mysql> insert into Booking
+    -> values(1,111, "2023-10-10", "2023-10-12", 101);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> values(2,122, "2023-10-04", "2023-10-08", 102);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(2,122, "2023-10-04", "2023-10-08", 102)' at line 1
+mysql> insert into Booking
+    -> values(2,122, "2023-10-04", "2023-10-08", 102);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Booking
+    -> values(3,133, "2023-11-02", "2023-11-03", 101);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into Booking
+    -> values(4,144, "2023-10-17", "2023-10-24", 101);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from Booking;
++---------+---------+------------+------------+--------+
+| HotelNo | GuestNo | DateFrom   | DateTo     | RoomNo |
++---------+---------+------------+------------+--------+
+|       1 |     111 | 2023-10-10 | 2023-10-12 |    101 |
+|       2 |     122 | 2023-10-04 | 2023-10-08 |    102 |
+|       3 |     133 | 2023-11-02 | 2023-11-03 |    101 |
+|       4 |     144 | 2023-10-17 | 2023-10-24 |    101 |
++---------+---------+------------+------------+--------+
+4 rows in set (0.00 sec)
+
+mysql> insert into Guest
+    -> values(222, "Ravindra Joshi", "Pune");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Guest
+    -> values(111, "Raghav Shelke", "Delhi");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into Guest
+    -> values(444, "Navneet Kumar", "Bihar");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> drop table Guest;
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> create table Guest
+    -> (GuestNo int, GuestName varchar(20), GuestAddress varchar(20));
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> insert into Guest
+    -> values(111, "Raghav Shelke", "Delhi");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into Guest
+    -> values(122, "Ranjit Singh", "Dubai");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into Guest
+    -> values(133, "Sharman Kumavat", "Pune");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into Guest
+    -> values(144, "Suvarna Kale", "Mumbai");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from Guest;
++---------+-----------------+--------------+
+| GuestNo | GuestName       | GuestAddress |
++---------+-----------------+--------------+
+|     111 | Raghav Shelke   | Delhi        |
+|     122 | Ranjit Singh    | Dubai        |
+|     133 | Sharman Kumavat | Pune         |
+|     144 | Suvarna Kale    | Mumbai       |
++---------+-----------------+--------------+
+4 rows in set (0.00 sec)
+
+mysql> select sum(Price) AS TotalRevenue
+    -> from Room
+    -> Where Type="Double";
++--------------+
+| TotalRevenue |
++--------------+
+|        21300 |
++--------------+
+1 row in set (0.05 sec)
+
+mysql> select Room.*, Guest.GuestName
+    -> from Room
+    -> LEFT JOIN Booking ON Room.RoomNo=Booking.Room.No
+    -> LEFT JOIN GUEST ON Booking.GuestNo=Guest.GuestNo
+    -> WHERE Room.HotelNo=(SELECT HotelNo FROM Hotel Where Name="Grosvenor")
+;
+ERROR 1054 (42S22): Unknown column 'booking.Room.No' in 'on clause'
+mysql> select Room.*, Guest.GuestName
+    -> from Room
+    -> LEFT JOIN Booking ON Room.RoomNo=Booking.RoomNo
+    -> LEFT JOIN GUEST ON Booking.GuestNo=Guest.GuestNo
+    -> WHERE Room.HotelNo=(SELECT HotelNo FROM Hotel Where Name="Grosvenor");
++--------+---------+--------+-------+-----------------+
+| RoomNo | HotelNo | Type   | Price | GuestName       |
++--------+---------+--------+-------+-----------------+
+|    101 |       2 | Single |  3000 | Suvarna Kale    |
+|    101 |       2 | Single |  3000 | Sharman Kumavat |
+|    101 |       2 | Single |  3000 | Raghav Shelke   |
+|    102 |       2 | Double |  5100 | Ranjit Singh    |
++--------+---------+--------+-------+-----------------+
+4 rows in set (0.04 sec)
+
+mysql> CREATE INDEX idx_room_price ON Room (Price);
+Query OK, 0 rows affected (0.10 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from Hotel;
++---------+--------------+--------+
+| HotelNo | Name         | City   |
++---------+--------------+--------+
+|       1 | Sai Hotel    | Shirdi |
+|       2 | Grosvenor    | Dubai  |
+|       3 | Giridhar     | Nashik |
+|       4 | StarMob      | Landon |
+|       5 | NewMoon      | Landon |
+|       6 | CheerishLand | Landon |
+|       7 | Ruby         | Landon |
++---------+--------------+--------+
+7 rows in set (0.04 sec)
+
+mysql> select * from Hotel where city="Landon";
++---------+--------------+--------+
+| HotelNo | Name         | City   |
++---------+--------------+--------+
+|       4 | StarMob      | Landon |
+|       5 | NewMoon      | Landon |
+|       6 | CheerishLand | Landon |
+|       7 | Ruby         | Landon |
++---------+--------------+--------+
+4 rows in set (0.00 sec)
+
+mysql> Update Room SET Price= Price*1.05;
+Query OK, 8 rows affected (0.04 sec)
+Rows matched: 8  Changed: 8  Warnings: 0
+
+mysql> select * from Room;
++--------+---------+--------+-------+
+| RoomNo | HotelNo | Type   | Price |
++--------+---------+--------+-------+
+|    101 |       1 | Double |  5250 |
+|    102 |       1 | Double |  5250 |
+|    101 |       2 | Single |  3150 |
+|    102 |       2 | Double |  5355 |
+|    101 |       3 | Double |  3150 |
+|    102 |       3 | Single |   840 |
+|    102 |       4 | Double |  3360 |
+|    101 |       4 | Single |  2625 |
++--------+---------+--------+-------+
+8 rows in set (0.00 sec)
+
+mysql> SELECT Hotel.Name, COUNT(Room.RoomNo) AS NumRooms
+    -> FROM Hotel
+    -> JOIN Room ON Hotel.HotelNo = Room.HotelNo
+    -> WHERE City = 'London'
+    -> GROUP BY Hotel.HotelNo;
+Empty set (0.04 sec)
+
+mysql> select * from Room where Type="Double";
++--------+---------+--------+-------+
+| RoomNo | HotelNo | Type   | Price |
++--------+---------+--------+-------+
+|    101 |       1 | Double |  5250 |
+|    102 |       1 | Double |  5250 |
+|    102 |       2 | Double |  5355 |
+|    101 |       3 | Double |  3150 |
+|    102 |       4 | Double |  3360 |
++--------+---------+--------+-------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT *
+    -> FROM Room
+    -> WHERE (Type = 'Double' OR Type = 'Family') AND Price < 40.00
+    -> ORDER BY Price ASC;
+Empty set (0.00 sec)
+
+mysql>

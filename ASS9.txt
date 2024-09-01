@@ -1,0 +1,157 @@
+Microsoft Windows [Version 10.0.22621.2283]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\tusha>mongod --version
+db version v7.0.2
+Build Info: {
+    "version": "7.0.2",
+    "gitVersion": "02b3c655e1302209ef046da6ba3ef6749dd0b62a",
+    "modules": [],
+    "allocator": "tcmalloc",
+    "environment": {
+        "distmod": "windows",
+        "distarch": "x86_64",
+        "target_arch": "x86_64"
+    }
+}
+
+C:\Users\tusha>mongosh
+Current Mongosh Log ID: 65228078e48054aa3ab14864
+Connecting to:          mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.0.1
+Using MongoDB:          7.0.2
+Using Mongosh:          2.0.1
+
+For mongosh info see: https://docs.mongodb.com/mongodb-shell/
+
+------
+   The server generated these startup warnings when booting
+   2023-10-08T11:56:04.605+05:30: Access control is not enabled for the database. Read and write access to data and configuration is unrestricted
+------
+
+test> use CRUD
+switched to db CRUD
+CRUD> db.student_data.insert({
+... "Sr.No" : 1,
+... "Name" : "Tushar",
+... "Address" : "Kopargaon",
+... "Dob" : 23/04/2003},
+... {"Sr.No" : 2,
+... "Name" : "Milind",
+... "Address" : "Satara",
+... "Dob" : 21/10/2003},
+... {"Sr.No" : 3,
+... "Name" : "Tejas",
+... "Address" : "Satara",
+... "Dob" : 10/03/2003})
+DeprecationWarning: Collection.insert() is deprecated. Use insertOne, insertMany, or bulkWrite.
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId("6522817de48054aa3ab14865") }
+}
+CRUD> db.student_data.find({}).pretty()
+[
+  {
+    _id: ObjectId("6522817de48054aa3ab14865"),
+    'Sr.No': 1,
+    Name: 'Tushar',
+    Address: 'Kopargaon',
+    Dob: 0.002870693959061408
+  }
+]
+CRUD> db.student_data.drop()
+true
+CRUD> db.student_data.insert({ "Sr.No": 1, "Name": "Tushar", "Address": "Kopargaon" , "Roll_No": 06})
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId("65228210e48054aa3ab14866") }
+}
+CRUD> db.student_data.insert({ "Sr.No": 2, "Name": "Milind", "Address": "Satara" , "Roll_No": 04})
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId("6522822fe48054aa3ab14867") }
+}
+CRUD> db.student_data.insert({ "Sr.No": 3, "Name": "Ram", "Address": "Shirdi" , "Roll_No": 02})
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId("65228250e48054aa3ab14868") }
+}
+CRUD> db.student_data.find({}).pretty()
+[
+  {
+    _id: ObjectId("65228210e48054aa3ab14866"),
+    'Sr.No': 1,
+    Name: 'Tushar',
+    Address: 'Kopargaon',
+    Roll_No: 6
+  },
+  {
+    _id: ObjectId("6522822fe48054aa3ab14867"),
+    'Sr.No': 2,
+    Name: 'Milind',
+    Address: 'Satara',
+    Roll_No: 4
+  },
+  {
+    _id: ObjectId("65228250e48054aa3ab14868"),
+    'Sr.No': 3,
+    Name: 'Ram',
+    Address: 'Shirdi',
+    Roll_No: 2
+  }
+]
+
+
+CRUD> db.student_data.update({"Roll_No" : 2}, {$set:{"Name" : "Sham"}})
+DeprecationWarning: Collection.update() is deprecated. Use updateOne, updateMany, or bulkWrite.
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+CRUD> db.student_data.find({}).pretty()
+[
+  {
+    _id: ObjectId("65228210e48054aa3ab14866"),
+    'Sr.No': 1,
+    Name: 'Tushar',
+    Address: 'Kopargaon',
+    Roll_No: 6
+  },
+  {
+    _id: ObjectId("6522822fe48054aa3ab14867"),
+    'Sr.No': 2,
+    Name: 'Milind',
+    Address: 'Satara',
+    Roll_No: 4
+  },
+  {
+    _id: ObjectId("65228250e48054aa3ab14868"),
+    'Sr.No': 3,
+    Name: 'Sham',
+    Address: 'Shirdi',
+    Roll_No: 2
+  }
+]
+
+CRUD> db.student_data.deleteOne({"Name": "Sham"})
+{ acknowledged: true, deletedCount: 1 }
+CRUD> db.student_data.find({}).pretty()
+[
+  {
+    _id: ObjectId("65228210e48054aa3ab14866"),
+    'Sr.No': 1,
+    Name: 'Tushar',
+    Address: 'Kopargaon',
+    Roll_No: 6
+  },
+  {
+    _id: ObjectId("6522822fe48054aa3ab14867"),
+    'Sr.No': 2,
+    Name: 'Milind',
+    Address: 'Satara',
+    Roll_No: 4
+  }
+]
+CRUD>

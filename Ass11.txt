@@ -1,0 +1,87 @@
+test> db.createCollection("city")
+test> db.city.insert([{"city":"Pune","Type":"urban","State":"Maharashtra","Population":5025632},{"city":"Mumbai","Type":"urban","State":"Maharashtra","Population":925632},{"city":"Bangloru","Type":"urban","State":"Karnataka","Population":325632},{"city":"Goa","Type":"rural","State":"Goa","Population":25632},{"city":"Aagra","Type":"urban","State":"Delhi","Population":825632},{"city":"Surat","Type":"urban","State":"Gujarat","Population":422432}])
+DeprecationWarning: Collection.insert() is deprecated. Use insertOne, insertMany, or bulkWrite.
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId("653a2824ee47fa92cd787e9c"),
+    '1': ObjectId("653a2824ee47fa92cd787e9d"),
+    '2': ObjectId("653a2824ee47fa92cd787e9e"),
+    '3': ObjectId("653a2824ee47fa92cd787e9f"),
+    '4': ObjectId("653a2824ee47fa92cd787ea0"),
+    '5': ObjectId("653a2824ee47fa92cd787ea1")
+  }
+}
+test> var mapStatePopulation = function () { emit(this.State, parseInt(this.Population)); };
+
+test> var reduceStatePopulation = function (key, values) { return Array.sum(values); };
+
+test> db.city.mapReduce( mapStatePopulation, reduceStatePopulation, { out: "statewise_population" } );
+{ result: 'statewise_population', ok: 1 }
+test> db.statewise_population.find();
+[
+  { _id: 'Goa', value: 25632 },
+  { _id: 'Gujarat', value: 422432 },
+  { _id: 'Delhi', value: 825632 },
+  { _id: 'Karnataka', value: 325632 },
+  { _id: 'Maharashtra', value: 5951264 }
+]
+test> var mapCityPopulation = function() {
+...     emit(this.city, parseInt(this.population));
+...
+test> var mapCityPopulation = function() {
+...     emit(this.city, parseInt(this.population));
+... var mapCityPopulation = function() {
+test> var mapCityPopulation=function(){
+... emit(this.city,parseInt(this.Population));
+... };
+
+test> var reduceCityPopulation = function(key, values) {
+...     return Array.sum(values);
+... };
+
+test>
+
+test> db.city.mapReduce(
+...     mapCityPopulation,
+...     reduceCityPopulation,
+...     {
+...         out: "citywise_population"
+...     }
+... );
+{ result: 'citywise_population', ok: 1 }
+test> db.citywise_population.find();
+[
+  { _id: 'Pune', value: 5025632 },
+  { _id: 'Mumbai', value: 925632 },
+  { _id: 'Aagra', value: 825632 },
+  { _id: 'Bangloru', value: 325632 },
+  { _id: 'Goa', value: 25632 },
+  { _id: 'Surat', value: 422432 }
+]
+test> var mapTypePopulation = function () { emit(this.city, parseInt(this.Population)); };
+
+test> var reduceTypePopulation = function(key, values) {
+...     return Array.sum(values);
+... };
+
+test>
+
+test> db.city.mapReduce(
+...     mapTypePopulation,
+...     reduceTypePopulation,
+...     {
+...         out: "typewise_population"
+...     }
+... );
+{ result: 'typewise_population', ok: 1 }
+test> db.typewise_population.find();
+[
+  { _id: 'Mumbai', value: 925632 },
+  { _id: 'Goa', value: 25632 },
+  { _id: 'Aagra', value: 825632 },
+  { _id: 'Surat', value: 422432 },
+  { _id: 'Bangloru', value: 325632 },
+  { _id: 'Pune', value: 5025632 }
+]
+test>
